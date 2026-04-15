@@ -35,6 +35,17 @@ public class ReservationService : IReservationService
 
         return ReservationMapper.ToResponse(createdReservation);
     }
+    public async Task DeleteAsync(Guid id)
+    {
+        var reservation = await _reservationRepository.GetByIdAsync(id);
+        if (reservation == null)
+        {
+            throw new KeyNotFoundException("Reservation not found.");
+        }
+
+        await _reservationRepository.DeleteAsync(reservation);
+    }
+
 
     private bool HasOverLap(TimeOnly startTime, TimeOnly endTime, List<Reservation> existingReservations)
     {

@@ -24,10 +24,11 @@ public class ReservationRepository : IReservationRepository
         return await _context.Reservations.FindAsync(id);
     }
 
-    public async Task DeleteAsync(Reservation reservation)
+    public async Task<Reservation> DeleteAsync(Reservation reservation)
     {
         _context.Reservations.Remove(reservation);
         await _context.SaveChangesAsync();
+        return reservation;
     }
 
     public async Task<List<Reservation>> GetByClassroomAndDateAsync(Guid classroomId, DateOnly date)
