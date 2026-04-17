@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DTOs.Requests;
 using reservations_api.Services;
+using DTOs.Responses;
 
 namespace reservations_api.Controllers;
 
@@ -59,5 +60,18 @@ public class ReservationController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<ReservationResponse>>> GetByDate([FromQuery] GetReservationsRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var reservations = await _reservationService.GetByDateAsync(request.Date);
+        return Ok(reservations);
+    }
+
 
 }
